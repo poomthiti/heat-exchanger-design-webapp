@@ -1,8 +1,8 @@
 <template>
-    <div id='result'>
+    <div id='shellResult'>
         <myNav />
         <section>
-            
+            <h1>SHELL</h1>
         </section>
         <customFooter />
     </div>
@@ -13,7 +13,11 @@ import myNav from './nav.vue'
 import customFooter from './footer.vue'
 
 export default {
-  name: "result",
+    name : "shellResult",
+    components: {
+        myNav,
+        customFooter,
+    }
 }
 </script>
 

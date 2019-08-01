@@ -1,13 +1,16 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import App from './App.vue';
-import Result from './components/result.vue';
+import PipeResult from './components/piperesult.vue';
+import Input from './components/input.vue';
+import ShellResult from './components/shellresult.vue';
 
 Vue.use(VueRouter);
 
-const routes = [ 
-  { path: '/results', component : Result},
-  { path: '/', component : App},
+const routes = [
+  { path: '/doublepipe', name: 'pipeResult', component: PipeResult, props: true },
+  { path: '/shellandtube', component: ShellResult, props: true },
+  { path: '/', component: Input }
 ]
 
 const router = new VueRouter({
@@ -18,7 +21,7 @@ const router = new VueRouter({
 Vue.config.productionTip = false
 
 new Vue({
-  el: '#app' ,
+  el: '#app',
   router,
   render: h => h(App),
 }).$mount('#app')

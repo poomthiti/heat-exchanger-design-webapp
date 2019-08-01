@@ -1,30 +1,21 @@
 <template>
   <div id="app" class="bg-dark m-0">
-    <div>
-    <myNav />
-    </div>
+    <router-view>
     <div class="container">
-    <searchSpecs />
+      <searchSpecs />
     </div>
-    <div>
-    <customFooter />
-    </div>
-    <router-view></router-view>
+    </router-view>
   </div>
 </template>
 
 <script>
-import myNav from './components/nav.vue'
 import searchSpecs from './components/input.vue'
-import customFooter from './components/footer.vue'
 
 
 export default {
   name: 'app',
   components: {
-    myNav ,
-    searchSpecs ,
-    customFooter,
+    searchSpecs
   },
 }
 </script>
