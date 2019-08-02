@@ -7,7 +7,7 @@
       </div>
       <div class="col-xs-12 col-md-6 d-flex justify-contents-center m-auto">
         <div>
-          <h3>Select Heat Transfer Equipment</h3>
+          <h3 class="h2">Select Heat Transfer Equipment</h3>
           <select class="form-control" v-model="equipment" v-on:change="show()">
             <option value="doublepipe">Double Pipe Heat Exchanger</option>
           </select>
@@ -22,7 +22,9 @@
                       <option value="co-current">Co-Current Flow</option>
                       <option value="counter-current">Counter-Current Flow</option>
                     </select>
-                    Material :
+                    <br />
+                    <span style="font-size: 21px">Pipe Specifications</span>
+                    <br />Material :
                     <select class="form-control" v-model="materialk">
                       <option value="236">Aluminum</option>
                       <option value="399">Copper</option>
@@ -30,8 +32,6 @@
                       <option value="16.3">Stainless Steel Type 316</option>
                       <option value="14.3">Stainless Steel Type 347</option>
                     </select>
-                    <br />
-                    <span style="font-size: 21px">Pipe Specifications</span>
                     <br />Inner Pipe :
                     <input
                       class="form-control"
@@ -58,6 +58,13 @@
                       v-model.number="outerThickness"
                       placeholder="Thickness(m)"
                     />
+                    <br />Hairpin Length :
+                    <input
+                      class="form-control"
+                      type="number"
+                      v-model.number="hairpinlength"
+                      placeholder="(m)"
+                    />
                     <br />Fouling Factor :
                     <select class="form-control" v-model="foulingFactor">
                       <option value="0.00009">Alcohol vapors</option>
@@ -76,7 +83,7 @@
                   </div>
                 </div>
               </div>
-
+              
               <div class="col-12 col-md-6">
                 <div class="card">
                   <div class="card-title pt-3 my-0">
@@ -84,7 +91,8 @@
                   </div>
                   <div class="card-body" style="background-color: #FFFFFF">
                     Fluid :
-                    <select class="form-control text-center" data-live-search="true" data-live-search-style="startsWith" v-model='fluid'>
+                    <select class="form-control text-center" data-live-search="true" data-live-search-style="startsWith" v-model='hotfluid'>
+                      <option value="toluene">Toluene</option>
                       <option value="water">Water</option>
                     </select>
                     Inlet Temperature :
@@ -92,21 +100,21 @@
                       class="form-control"
                       type="number"
                       v-model.number="hotInletTemp"
-                      placeholder="°C"
+                      placeholder="K"
                     />
                     Outlet Temperature :
                     <input
                       class="form-control"
                       type="number"
                       v-model.number="hotOutletTemp"
-                      placeholder="°C"
+                      placeholder="K"
                     />
                     Mass Flowrate of Hot media :
                     <input
                       class="form-control"
                       type="number"
                       v-model.number="massFlowrate"
-                      placeholder="kg/hr"
+                      placeholder="kg/s"
                     />
                     Flows In :
                     <form>
@@ -136,19 +144,24 @@
                     <span style="font-size: 21px">Cold Media</span>
                   </div>
                   <div class="card-body">
+                    Fluid :
+                    <select class="form-control text-center" data-live-search="true" data-live-search-style="startsWith" v-model='coldfluid'>
+                      <option value="toluene">Toluene</option>
+                      <option value="water">Water</option>
+                    </select>
                     Inlet Temperature :
                     <input
                       class="form-control"
                       type="number"
                       v-model.number="coldInletTemp"
-                      placeholder="°C"
+                      placeholder="K"
                     />
                     Outlet Temperature :
                     <input
                       class="form-control"
                       type="number"
                       v-model.number="coldOutletTemp"
-                      placeholder="°C"
+                      placeholder="K"
                     />
                   </div>
                 </div>
@@ -257,21 +270,21 @@
                   class="form-control"
                   type="number"
                   v-model.number="hotInletTemp"
-                  placeholder="°C"
+                  placeholder="K"
                 />
                 Outlet Temperature :
                 <input
                   class="form-control"
                   type="number"
                   v-model.number="hotOutletTemp"
-                  placeholder="°C"
+                  placeholder="K"
                 />
                 Mass Flowrate of Hot media :
                 <input
                   class="form-control"
                   type="number"
                   v-model.number="massFlowrate"
-                  placeholder="kg/hr"
+                  placeholder="kg/s"
                 />
                 <br />
                 <span style="font-size: 21px">Cold Media</span>
@@ -280,14 +293,14 @@
                   class="form-control"
                   type="number"
                   v-model.number="coldInletTemp"
-                  placeholder="°C"
+                  placeholder="K"
                 />
                 Outlet Temperature :
                 <input
                   class="form-control"
                   type="number"
                   v-model.number="coldOutletTemp"
-                  placeholder="°C"
+                  placeholder="K"
                 />
                 <br />Fouling Factor :
                 <select class="form-control" v-model="foulingFactor">
@@ -347,8 +360,10 @@ export default {
       passes: "",
       foulingFactor: "",
       flowLocation: "",
-      fluid: "",
+      hotfluid: "",
+      coldfluid: "",
       pressure: "",
+      hairpinlength: "",
     };
   },
   components: {
@@ -373,7 +388,7 @@ export default {
         name: "pipeResult",
         params: {
           flowtype: this.flowType,
-          materialk: this.materialK,
+          materialk: this.materialk,
           innerdiameter: this.innerDiameter,
           innerthickness: this.innerThickness,
           outerdiameter: this.outerDiameter,
@@ -385,8 +400,10 @@ export default {
           coldinlettemp: this.coldInletTemp,
           coldoutlettemp: this.coldOutletTemp,
           flowlocation: this.flowLocation,
-          fluid: this.fluid,
-          pressure: this.pressure*1000
+          hotfluid: this.hotfluid,
+          coldfluid: this.coldfluid,
+          pressure: this.pressure*1000,
+          hairpinlength : this.hairpinlength
         }
       });
     }

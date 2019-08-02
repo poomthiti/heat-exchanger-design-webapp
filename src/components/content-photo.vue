@@ -1,6 +1,6 @@
 <template>
     <div id="contentPhoto" class="my-3">
-        <h2>Find your desired Heat Exchanger !</h2>
+        <h2>Find your desired Heat Exchanger</h2>
         <img id="shufflingImage" src="../assets/heat-exchanger-icon-29.jpg"
         class = "w-50"
         >
