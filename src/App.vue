@@ -28,5 +28,7 @@ export default {
   text-align: center;
   color: rgb(185, 48, 78);
   margin-top: 60px;
-}
+  width: 100%
+};
+
 </style>

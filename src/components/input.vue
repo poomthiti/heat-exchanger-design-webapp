@@ -1,7 +1,7 @@
 <template>
   <div id="searchSpecs">
-    <myNav />
-    <div class="row row-centered">
+    <myNav></myNav>
+    <div class="row row-centered m-0" id="universe" style="height: 82vh">
       <div class="col-xs-12 col-md-4 d-flex justify-contents-center m-auto">
         <contentPhoto></contentPhoto>
       </div>
@@ -24,15 +24,16 @@
                     </select>
                     <br />
                     <span style="font-size: 21px">Pipe Specifications</span>
+                    <br />
                     <br />Material :
-                    <select class="form-control" v-model="materialk">
+                    <select class="form-control" v-model.number="materialk">
                       <option value="236">Aluminum</option>
                       <option value="399">Copper</option>
                       <option value="14.4">Stainless Steel Type 304</option>
                       <option value="16.3">Stainless Steel Type 316</option>
                       <option value="14.3">Stainless Steel Type 347</option>
                     </select>
-                    <br />Inner Pipe :
+                    <hr />Inner Pipe :
                     <input
                       class="form-control"
                       type="number"
@@ -45,7 +46,7 @@
                       v-model.number="innerThickness"
                       placeholder="Thickness(m)"
                     />
-                    Outer Pipe :
+                    <hr />Outer Pipe :
                     <input
                       class="form-control"
                       type="number"
@@ -58,17 +59,23 @@
                       v-model.number="outerThickness"
                       placeholder="Thickness(m)"
                     />
-                    <br />Hairpin Length :
+                    <hr />
+                    <div class="form-group">
+                    Hairpin Length :
                     <input
                       class="form-control"
                       type="number"
                       v-model.number="hairpinlength"
                       placeholder="(m)"
+                      aria-describedby="hairpinInfo"
                     />
-                    <br />Fouling Factor :
-                    <select class="form-control" v-model="foulingFactor">
+                    <small id="hairpinInfo" class="form-text text-muted">*Fill in a random number besides 0 if not needed in your calculation</small>
+                    </div>
+                    <hr />Fouling Factor :
+                    <select class="form-control" v-model.number="foulingFactor">
                       <option value="0.00009">Alcohol vapors</option>
                       <option value="0.0002">Boiler feed water, treated above 325 K</option>
+                      <option value= 0>Clean Surface</option>
                       <option value="0.0009">Fuel oil</option>
                       <option value="0.0004">Industrial air</option>
                       <option value="0.0007">Quenching oil</option>
@@ -77,13 +84,17 @@
                       <option value="0.0002">Seawater above 325 K</option>
                       <option value="0.00009">Steam</option>
                     </select>
-                    <br />
-                    Operating Pressure :
-                    <input class="form-control" type="number" v-model.number="pressure" placeholder="kPa">
+                    <hr />Operating Pressure :
+                    <input
+                      class="form-control"
+                      type="number"
+                      v-model.number="pressure"
+                      placeholder="kPa"
+                    />
                   </div>
                 </div>
               </div>
-              
+
               <div class="col-12 col-md-6">
                 <div class="card">
                   <div class="card-title pt-3 my-0">
@@ -91,11 +102,19 @@
                   </div>
                   <div class="card-body" style="background-color: #FFFFFF">
                     Fluid :
-                    <select class="form-control text-center" data-live-search="true" data-live-search-style="startsWith" v-model='hotfluid'>
+                    <select
+                      class="form-control text-center"
+                      data-live-search="true"
+                      data-live-search-style="startsWith"
+                      v-model="hotfluid"
+                    >
+                      <option value="aniline">Aniline</option>
+                      <option value="benzene">Benzene</option>
+                      <option value="methanol">Methanol</option>
                       <option value="toluene">Toluene</option>
                       <option value="water">Water</option>
                     </select>
-                    Inlet Temperature :
+                    <hr />Inlet Temperature :
                     <input
                       class="form-control"
                       type="number"
@@ -109,30 +128,30 @@
                       v-model.number="hotOutletTemp"
                       placeholder="K"
                     />
-                    Mass Flowrate of Hot media :
+                    <hr />Mass Flowrate (Specify for Hot,Cold or Both) :
                     <input
                       class="form-control"
                       type="number"
-                      v-model.number="massFlowrate"
+                      v-model.number="hotMassFlowrate"
                       placeholder="kg/s"
                     />
-                    Flows In :
+                    <hr />Flows In :
                     <form>
                       <label class="radio-inline mx-2">
                         <input
                           type="radio"
-                          name="flowLocation"
+                          name="hotFlowLocation"
                           value="inner"
-                          v-model="flowLocation"
+                          v-model="hotFlowLocation"
                           checked
                         />Inner Pipe
                       </label>
                       <label class="radio-inline mx-2">
                         <input
                           type="radio"
-                          name="flowLocation"
+                          name="hotFlowLocation"
                           value="outer"
-                          v-model="flowLocation"
+                          v-model="hotFlowLocation"
                         />Outer Pipe
                       </label>
                     </form>
@@ -145,11 +164,19 @@
                   </div>
                   <div class="card-body">
                     Fluid :
-                    <select class="form-control text-center" data-live-search="true" data-live-search-style="startsWith" v-model='coldfluid'>
+                    <select
+                      class="form-control text-center"
+                      data-live-search="true"
+                      data-live-search-style="startsWith"
+                      v-model="coldfluid"
+                    >
+                      <option value="aniline">Aniline</option>
+                      <option value="benzene">Benzene</option>
+                      <option value="methanol">Methanol</option>
                       <option value="toluene">Toluene</option>
                       <option value="water">Water</option>
                     </select>
-                    Inlet Temperature :
+                    <hr />Inlet Temperature :
                     <input
                       class="form-control"
                       type="number"
@@ -162,6 +189,13 @@
                       type="number"
                       v-model.number="coldOutletTemp"
                       placeholder="K"
+                    />
+                    <hr />Mass Flowrate (Specify for Hot,Cold or Both) :
+                    <input
+                      class="form-control"
+                      type="number"
+                      v-model.number="coldMassFlowrate"
+                      placeholder="kg/s"
                     />
                   </div>
                 </div>
@@ -283,7 +317,7 @@
                 <input
                   class="form-control"
                   type="number"
-                  v-model.number="massFlowrate"
+                  v-model.number="hotMassFlowrate"
                   placeholder="kg/s"
                 />
                 <br />
@@ -350,7 +384,8 @@ export default {
       innerThickness: "",
       outerDiameter: "",
       outerThickness: "",
-      massFlowrate: "",
+      hotMassFlowrate: "",
+      coldMassFlowrate: "",
       exchangerType: "",
       stationaryHeadType: "",
       shellType: "",
@@ -359,11 +394,11 @@ export default {
       tubeLength: "",
       passes: "",
       foulingFactor: "",
-      flowLocation: "",
+      hotFlowLocation: "",
       hotfluid: "",
       coldfluid: "",
       pressure: "",
-      hairpinlength: "",
+      hairpinlength: ""
     };
   },
   components: {
@@ -374,6 +409,7 @@ export default {
   methods: {
     show() {
       if (this.equipment === "doublepipe") {
+        document.getElementById("universe").style.height = "100%"
         document.getElementById("doublePipeEx").classList.remove("d-none"),
           document.getElementById("shellTubeEx").classList.add("d-none"),
           (document.getElementById("shufflingImage").src = doublePipeImg);
@@ -384,28 +420,51 @@ export default {
       }
     },
     passData() {
-      this.$router.push({
-        name: "pipeResult",
-        params: {
-          flowtype: this.flowType,
-          materialk: this.materialk,
-          innerdiameter: this.innerDiameter,
-          innerthickness: this.innerThickness,
-          outerdiameter: this.outerDiameter,
-          outerthickness: this.outerThickness,
-          foulingfactor: this.foulingFactor,
-          hotinlettemp: this.hotInletTemp,
-          hotoutlettemp: this.hotOutletTemp,
-          massflowrate: this.massFlowrate,
-          coldinlettemp: this.coldInletTemp,
-          coldoutlettemp: this.coldOutletTemp,
-          flowlocation: this.flowLocation,
-          hotfluid: this.hotfluid,
-          coldfluid: this.coldfluid,
-          pressure: this.pressure*1000,
-          hairpinlength : this.hairpinlength
-        }
-      });
+      if (
+        this.flowType &&
+        this.materialk &&
+        this.innerDiameter >= 0 &&
+        this.innerThickness >= 0 &&
+        this.outerDiameter >= 0 &&
+        this.outerThickness >= 0 &&
+        this.foulingFactor >= 0 &&
+        this.hotInletTemp > this.hotOutletTemp &&
+        this.coldInletTemp < this.coldOutletTemp &&
+        this.hotFlowLocation &&
+        this.hotfluid &&
+        this.coldfluid &&
+        this.pressure >= 0 &&
+        this.hairpinlength > 0 &&
+        (this.hotMassFlowrate > 0 || this.coldMassFlowrate > 0)
+      ) {
+        this.$router.push({
+          name: "pipeResult",
+          params: {
+            flowtype: this.flowType,
+            materialk: this.materialk,
+            innerdiameter: this.innerDiameter,
+            innerthickness: this.innerThickness,
+            outerdiameter: this.outerDiameter,
+            outerthickness: this.outerThickness,
+            foulingfactor: this.foulingFactor,
+            hotinlettemp: this.hotInletTemp,
+            hotoutlettemp: this.hotOutletTemp,
+            hotmassflowrate: this.hotMassFlowrate,
+            coldmassflowrate: this.coldMassFlowrate,
+            coldinlettemp: this.coldInletTemp,
+            coldoutlettemp: this.coldOutletTemp,
+            hotflowlocation: this.hotFlowLocation,
+            hotfluid: this.hotfluid,
+            coldfluid: this.coldfluid,
+            pressure: this.pressure * 1000,
+            hairpinlength: this.hairpinlength
+          }
+        });
+      } else {
+        alert(
+          "Please fill in all fields or check if you entered appropriate condition(s)"
+        );
+      }
     }
   }
 };
@@ -416,7 +475,7 @@ h3 {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
+
   color: rgb(185, 48, 78);
   margin-top: 15px;
 }
