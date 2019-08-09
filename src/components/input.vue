@@ -72,7 +72,8 @@
                     <small id="hairpinInfo" class="form-text text-muted">*Fill in a random number besides 0 if not needed in your calculation</small>
                     </div>
                     <hr />Fouling Factor :
-                    <select class="form-control" v-model.number="foulingFactor">
+                    <select class="form-control" v-on:change="updateFoulingFactor()" id="foulingSelect">
+                      <option value="x" selected disabled>Please select</option>
                       <option value="0.00009">Alcohol vapors</option>
                       <option value="0.0002">Boiler feed water, treated above 325 K</option>
                       <option value= 0>Clean Surface</option>
@@ -418,6 +419,9 @@ export default {
           document.getElementById("shellTubeEx").classList.remove("d-none"),
           (document.getElementById("shufflingImage").src = shellImg);
       }
+    },
+    updateFoulingFactor() {
+      this.foulingFactor = Number(document.getElementById("foulingSelect").value)
     },
     passData() {
       if (

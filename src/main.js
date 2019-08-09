@@ -1,3 +1,4 @@
+import Vue from 'vue'
 import VueRouter from 'vue-router';
 import App from './App.vue';
 import PipeResult from './components/piperesult.vue';
@@ -9,7 +10,7 @@ Vue.use(VueRouter);
 const routes = [
   { path: '/doublepipe', name: 'pipeResult', component: PipeResult, props: true },
   { path: '/shellandtube', component: ShellResult, props: true },
-  { path: '/', component: Input }
+  { path: '/',component: Input }
 ]
 
 const router = new VueRouter({

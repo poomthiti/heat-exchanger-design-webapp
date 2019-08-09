@@ -39,9 +39,7 @@
         </tbody>
       </table>
       <br>
-      <router-link to="/">
-      <button class="btn btn-success mb-4 px-4 py-3">Restart</button>
-      </router-link>
+      <button class="btn btn-success mb-4 px-4 py-3" v-on:click="backHome()">Restart</button>
     </section>
     <customFooter />
   </div>
@@ -97,6 +95,9 @@ export default {
     };
   },
   methods: {
+    backHome() {
+      this.$router.push('/')
+    },
     getFluidProps: async function() {
       const hotFluid = axios
         .get(`https://poom-api.mecode.asia/chemical/${this.hotfluid}`, {
